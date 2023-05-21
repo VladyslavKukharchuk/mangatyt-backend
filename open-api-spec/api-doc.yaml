@@ -1,0 +1,1096 @@
+openapi: 3.0.0
+paths:
+  /auth/register:
+    post:
+      operationId: AuthController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterAuthDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/auth/register
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  /auth/confirm:
+    post:
+      operationId: AuthController_confirm
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmAuthDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/auth/confirm
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  /auth/login:
+    post:
+      operationId: AuthController_findAll
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginAuthDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/auth/login
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  /auth/forgot:
+    post:
+      operationId: AuthController_forgotPassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgotAuthDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/auth/forgot
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  /auth/confirm-password:
+    post:
+      operationId: AuthController_confirmForgotPassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmForgotPasswordAuthDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/auth/confirm-password
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  /auth/change-password:
+    post:
+      operationId: AuthController_changePassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordAuthDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/auth/change-password
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  /user:
+    get:
+      operationId: UserController_findAll
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags:
+        - user
+      security:
+        - bearer: []
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/user
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+    put:
+      operationId: UserController_update
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDto"
+      responses:
+        "200":
+          description: ""
+      tags:
+        - user
+      security:
+        - bearer: []
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: PUT
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/user
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+    delete:
+      operationId: UserController_remove
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags:
+        - user
+      security:
+        - bearer: []
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/user
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  "/user/{resourceId}":
+    get:
+      operationId: UserController_findOne
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags:
+        - user
+      security:
+        - bearer: []
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/user/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+  /user/avatar:
+    post:
+      operationId: UserController_addAvatar
+      parameters: []
+      responses:
+        "201":
+          description: ""
+      tags:
+        - user
+      security:
+        - bearer: []
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/user/avatar
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+    delete:
+      operationId: UserController_removeAvatar
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags:
+        - user
+      security:
+        - bearer: []
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/user/avatar
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  /author:
+    post:
+      operationId: AuthorController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAuthorDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/author
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+    get:
+      operationId: AuthorController_findAll
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/author
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  "/author/{resourceId}":
+    get:
+      operationId: AuthorController_findOne
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/author/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+    put:
+      operationId: AuthorController_update
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAuthorDto"
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: PUT
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/author/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+    delete:
+      operationId: AuthorController_remove
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/author/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+  "/author/{resourceId}/photo":
+    post:
+      operationId: AuthorController_addPhoto
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/author/{resourceId}/photo
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+    delete:
+      operationId: AuthorController_removePhoto
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/author/{resourceId}/photo
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+  /chapter:
+    post:
+      operationId: ChapterController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateChapterDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/chapter
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+    get:
+      operationId: ChapterController_findAll
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/chapter
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  "/chapter/{resourceId}":
+    get:
+      operationId: ChapterController_findOne
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/chapter/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+    put:
+      operationId: ChapterController_update
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateChapterDto"
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: PUT
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/chapter/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+    delete:
+      operationId: ChapterController_remove
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/chapter/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+  "/chapter/{resourceId}/pages":
+    post:
+      operationId: ChapterController_addPages
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/chapter/{resourceId}/pages
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+    delete:
+      operationId: ChapterController_removePages
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/chapter/{resourceId}/pages
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+  /comment:
+    post:
+      operationId: CommentController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCommentDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/comment
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+    get:
+      operationId: CommentController_findAll
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/comment
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  "/comment/{id}":
+    get:
+      operationId: CommentController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/comment/{id}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.id: method.request.path.id
+    patch:
+      operationId: CommentController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCommentDto"
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: PATCH
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/comment/{id}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.id: method.request.path.id
+    delete:
+      operationId: CommentController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/comment/{id}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.id: method.request.path.id
+  /title:
+    post:
+      operationId: TitleController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTitleDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/title
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+    get:
+      operationId: TitleController_findAll
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/title
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  "/title/{resourceId}":
+    get:
+      operationId: TitleController_findOne
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/title/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+    put:
+      operationId: TitleController_update
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTitleDto"
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: PUT
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/title/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+    delete:
+      operationId: TitleController_remove
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/title/{resourceId}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+  "/title/{resourceId}/cover":
+    post:
+      operationId: TitleController_addCover
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/title/{resourceId}/cover
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+    delete:
+      operationId: TitleController_removeCover
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/title/{resourceId}/cover
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+  /health:
+    get:
+      operationId: AppController_healthCheck
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/health
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+  /favicon.ico:
+    get:
+      operationId: AppController_favicon
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: GET
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/favicon.ico
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+info:
+  title: Project
+  description: Project API description
+  version: "1.0"
+  contact: {}
+tags:
+  - name: user
+    description: ""
+servers: []
+components:
+  schemas:
+    RegisterAuthDto:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        username:
+          type: string
+      required:
+        - email
+        - password
+        - username
+    ConfirmAuthDto:
+      type: object
+      properties:
+        email:
+          type: string
+        code:
+          type: string
+      required:
+        - email
+        - code
+    LoginAuthDto:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    ForgotAuthDto:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+        - email
+    ConfirmForgotPasswordAuthDto:
+      type: object
+      properties:
+        email:
+          type: string
+        newPassword:
+          type: string
+        confirmationCode:
+          type: string
+      required:
+        - email
+        - newPassword
+        - confirmationCode
+    ChangePasswordAuthDto:
+      type: object
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
+      required:
+        - oldPassword
+        - newPassword
+    UpdateUserDto:
+      type: object
+      properties:
+        username:
+          type: string
+      required:
+        - username
+    CreateAuthorDto:
+      type: object
+      properties: {}
+    UpdateAuthorDto:
+      type: object
+      properties: {}
+    CreateChapterDto:
+      type: object
+      properties: {}
+    UpdateChapterDto:
+      type: object
+      properties: {}
+    CreateCommentDto:
+      type: object
+      properties: {}
+    UpdateCommentDto:
+      type: object
+      properties: {}
+    CreateTitleDto:
+      type: object
+      properties: {}
+    UpdateTitleDto:
+      type: object
+      properties: {}

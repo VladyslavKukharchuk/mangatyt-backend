@@ -1,0 +1,11 @@
+# Node modules
+node_modules
+
+# Environment variables
+.env.dev
+.env.prod
+.env.tpl
+
+# Docker files
+Dockerfile
+docker-compose.yml
