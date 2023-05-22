@@ -89,9 +89,6 @@ export class TitleService {
     } = updateTitleDto;
     const title = await this.findOneByResourceId(resourceId);
 
-    console.log(updateTitleDto);
-    console.log(title);
-
     const authorsArr: AuthorModel[] = [];
     for (const resourceId of authors) {
       const author = await this.authorService.findOneByResourceId(resourceId);

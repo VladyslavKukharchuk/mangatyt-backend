@@ -4,7 +4,11 @@ import { UpdateAuthorDto } from './dto/update-author.dto';
 import AuthorRepository from './author.repository';
 import { DeleteResult } from 'typeorm';
 import { AuthorModel } from './author.model';
-import { NotFoundException, ValidationException, ConflictException } from '@common/exceptions';
+import {
+  NotFoundException,
+  ValidationException,
+  ConflictException,
+} from '@common/exceptions';
 import { S3Service } from '@common/integrations/s3/s3.service';
 
 @Injectable()
