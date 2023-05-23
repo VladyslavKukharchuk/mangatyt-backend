@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToMany } from 'typeorm';
 import BaseModel from '@common/model/base.abstract.model';
+import { TeamModel } from '@api/team/team.model';
 
 @Entity({ name: 'users' })
 export class UserModel extends BaseModel {
@@ -22,4 +23,7 @@ export class UserModel extends BaseModel {
     unique: true,
   })
   username: string;
+
+  @ManyToMany(() => TeamModel, (team) => team.members)
+  teams: TeamModel[];
 }

@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 import BaseModel from '@common/model/base.abstract.model';
 import { TitleModel } from '@api/title/title.model';
+import { TeamModel } from '@api/team/team.model';
 
 @Entity({ name: 'chapters' })
 export class ChapterModel extends BaseModel {
@@ -25,6 +26,6 @@ export class ChapterModel extends BaseModel {
   @Column({ type: 'text', array: true, nullable: true, default: [] })
   pages: string[];
 
-  // @ManyToOne(() => TranslatorModel, (translator) => translator.chapters)
-  // translator: TranslatorModel;
+  @ManyToOne(() => TeamModel, (team) => team.chapters)
+  translator: TeamModel;
 }

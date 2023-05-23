@@ -11,6 +11,7 @@ import { DatabaseModule } from '@database/database.module';
 import { PassportModule } from '@nestjs/passport';
 import { S3Module } from '@common/integrations/s3/s3.module';
 import { JwtStrategy } from '@common/integrations/cognito/jwt.strategy';
+import { TeamModule } from '@api/team/team.module';
 
 @Module({
   controllers: [AppController],
@@ -29,6 +30,7 @@ import { JwtStrategy } from '@common/integrations/cognito/jwt.strategy';
     TitleModule,
     DatabaseModule,
     S3Module,
+    TeamModule,
   ],
 })
 export class AppModule {}

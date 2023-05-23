@@ -12,6 +12,7 @@ import {
 import { AuthorService } from '@api/author/author.service';
 import { AuthorModel } from '@api/author/author.model';
 import { S3Service } from '@common/integrations/s3/s3.service';
+import { TeamService } from '@api/team/team.service';
 
 @Injectable()
 export class TitleService {
@@ -19,6 +20,7 @@ export class TitleService {
     private readonly titleRepository: TitleRepository,
     private readonly authorService: AuthorService,
     private readonly s3Service: S3Service,
+    private readonly teamService: TeamService,
   ) {}
   async create(createTitleDto: CreateTitleDto): Promise<TitleModel> {
     const {
@@ -31,6 +33,7 @@ export class TitleService {
       translateStatus,
       authors,
       description,
+      translator,
     } = createTitleDto;
 
     const newTitle = new TitleModel();
@@ -52,6 +55,10 @@ export class TitleService {
     }
 
     newTitle.authors = authorsArr;
+
+    const team = await this.teamService.findOneByResourceId(translator);
+
+    newTitle.translators = [team];
 
     newTitle.resourceId = this.titleRepository.newResourceId();
 
@@ -89,9 +96,6 @@ export class TitleService {
     } = updateTitleDto;
     const title = await this.findOneByResourceId(resourceId);
 
-    console.log(updateTitleDto);
-    console.log(title);
-
     const authorsArr: AuthorModel[] = [];
     for (const resourceId of authors) {
       const author = await this.authorService.findOneByResourceId(resourceId);
@@ -112,6 +116,19 @@ export class TitleService {
     });
 
     return await this.titleRepository.saveNewOrUpdatedModel(updatedTitle);
+  }
+
+  async addTranslator(
+    resourceId: string,
+    translator: string,
+  ): Promise<TitleModel> {
+    const title = await this.findOneByResourceId(resourceId);
+
+    const team = await this.teamService.findOneByResourceId(translator);
+
+    title.translators.push(team);
+
+    return await this.titleRepository.saveNewOrUpdatedModel(title);
   }
 
   async addCover(

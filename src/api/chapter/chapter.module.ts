@@ -9,9 +9,16 @@ import TitleRepository from '@api/title/title.repository';
 import { TitleModel } from '@api/title/title.model';
 import { AuthorModule } from '@api/author/author.module';
 import { S3Service } from '@common/integrations/s3/s3.service';
+import { TeamModule } from '@api/team/team.module';
+import { TitleModule } from '@api/title/title.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ChapterModel, TitleModel]), AuthorModule],
+  imports: [
+    TypeOrmModule.forFeature([ChapterModel, TitleModel]),
+    AuthorModule,
+    TeamModule,
+    TitleModule,
+  ],
   controllers: [ChapterController],
   providers: [
     ChapterService,

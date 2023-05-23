@@ -5,6 +5,7 @@ import { TitleStatus } from '@api/title/enum/title-status.enum';
 import { TitleTranslateStatus } from '@api/title/enum/title-translate-status.enum';
 import { AuthorModel } from '@api/author/author.model';
 import { ChapterModel } from '@api/chapter/chapter.model';
+import { TeamModel } from '@api/team/team.model';
 
 @Entity({ name: 'titles' })
 export class TitleModel extends BaseModel {
@@ -41,12 +42,16 @@ export class TitleModel extends BaseModel {
   })
   translateStatus: TitleTranslateStatus;
 
+  @Column({ type: 'text' })
+  description: string;
+
   @ManyToMany(() => AuthorModel, (author) => author.titles)
   @JoinTable()
   authors: AuthorModel[];
 
-  @Column({ type: 'text' })
-  description: string;
+  @ManyToMany(() => TeamModel, (team) => team.titles)
+  @JoinTable()
+  translators: TeamModel[];
 
   // Коментарі до тайтлу, звʼязок багато до багатьох
   // comments: ;
@@ -56,9 +61,6 @@ export class TitleModel extends BaseModel {
 
   // Енам що містить самив тегів які відповідають тайтлу
   // tags: ;
-
-  // Перекладачі що робили переклад тайтлу, звʼязок багато до багатьох
-  // translators: ;
 
   // Повʼязані тайтли, звʼязок багато до багатьох
   // related: ;

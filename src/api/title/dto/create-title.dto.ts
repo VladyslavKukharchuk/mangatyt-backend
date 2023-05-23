@@ -40,4 +40,7 @@ export class CreateTitleDto {
 
   @IsString()
   description: string;
+
+  @IsString()
+  translator: string;
 }

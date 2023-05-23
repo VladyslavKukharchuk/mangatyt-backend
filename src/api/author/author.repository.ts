@@ -20,6 +20,13 @@ class AuthorRepository extends BaseRepository<AuthorModel> {
     return await qb.getOne();
   }
 
+  // async getWithTitlesByResourceId(resourceId: string): Promise<AuthorModel> {
+  //   const qb = this.repository
+  //     .createQueryBuilder('authors')
+  //     .leftJoinAndSelect('authors.titles', 'titles')
+  //     .where('authors.resource_id = :resourceId', { resourceId });
+  //   return await qb.getOne();
+  // }
   async getWithTitlesByResourceId(resourceId: string): Promise<AuthorModel> {
     const qb = this.repository
       .createQueryBuilder('authors')
