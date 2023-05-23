@@ -16,6 +16,8 @@ class TitleRepository extends BaseRepository<TitleModel> {
   async getByResourceId(resourceId: string): Promise<TitleModel> {
     const qb = this.repository
       .createQueryBuilder('titles')
+      .leftJoinAndSelect('titles.authors', 'authors')
+      .leftJoinAndSelect('titles.translators', 'translators')
       .where('titles.resource_id = :resourceId', { resourceId });
     return await qb.getOne();
   }

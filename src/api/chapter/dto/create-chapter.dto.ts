@@ -21,4 +21,7 @@ export class CreateChapterDto {
 
   @IsString()
   title: string;
+
+  @IsString()
+  translator: string;
 }

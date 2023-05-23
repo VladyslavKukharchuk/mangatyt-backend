@@ -17,6 +17,7 @@ class ChapterRepository extends BaseRepository<ChapterModel> {
     const qb = this.repository
       .createQueryBuilder('chapters')
       .leftJoinAndSelect('chapters.title', 'title')
+      .leftJoinAndSelect('chapters.translator', 'translator')
       .where('chapters.resource_id = :resourceId', { resourceId });
     return await qb.getOne();
   }

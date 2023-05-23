@@ -1127,6 +1127,70 @@ paths:
             statusCode: "200"
         requestParameters:
           integration.request.path.resourceId: method.request.path.resourceId
+  "/team/{resourceId}/members":
+    post:
+      operationId: TeamController_addMember
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddMemberDto"
+      responses:
+        "201":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: POST
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/team/{resourceId}/members
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+  "/team/{resourceId}/members/{member}":
+    delete:
+      operationId: TeamController_removeMember
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: member
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      x-amazon-apigateway-integration:
+        connectionId:
+          Ref: VpcLink
+        httpMethod: DELETE
+        type: http_proxy
+        passthroughBehavior: when_no_match
+        uri:
+          Fn::Sub: http://${LoadBalancerDnsName}:${AppPort}/team/{resourceId}/members/{member}
+        connectionType: VPC_LINK
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.resourceId: method.request.path.resourceId
+          integration.request.path.member: method.request.path.member
   /health:
     get:
       operationId: AppController_healthCheck
@@ -1274,5 +1338,8 @@ components:
       type: object
       properties: {}
     UpdateTeamDto:
+      type: object
+      properties: {}
+    AddMemberDto:
       type: object
       properties: {}

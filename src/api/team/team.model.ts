@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import BaseModel from '@common/model/base.abstract.model';
 import { UserModel } from '@api/user/user.model';
 import { TitleModel } from '@api/title/title.model';
@@ -31,6 +31,6 @@ export class TeamModel extends BaseModel {
   @ManyToMany(() => TitleModel, (title) => title.translators)
   titles: TitleModel[];
 
-  @OneToMany(() => ChapterModel, (chapter) => chapter.title)
+  @OneToMany(() => ChapterModel, (chapter) => chapter.translator)
   chapters: ChapterModel[];
 }

@@ -28,6 +28,22 @@ class TeamRepository extends BaseRepository<TeamModel> {
     return await qb.getOne();
   }
 
+  async getWithMembersByResourceId(resourceId: string): Promise<TeamModel> {
+    const qb = this.repository
+      .createQueryBuilder('teams')
+      .leftJoinAndSelect('teams.members', 'members')
+      .where('teams.resource_id = :resourceId', { resourceId });
+    return await qb.getOne();
+  }
+
+  async getWithChaptersByResourceId(resourceId: string): Promise<TeamModel> {
+    const qb = this.repository
+      .createQueryBuilder('teams')
+      .leftJoinAndSelect('teams.chapters', 'chapters')
+      .where('teams.resource_id = :resourceId', { resourceId });
+    return await qb.getOne();
+  }
+
   async getMany(): Promise<TeamModel[]> {
     const qb = this.repository.createQueryBuilder('teams');
     return qb.getMany();

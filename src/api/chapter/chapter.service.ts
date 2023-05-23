@@ -8,28 +8,36 @@ import { NotFoundException } from '@common/exceptions';
 import { DeleteResult } from 'typeorm';
 import { S3Service } from '@common/integrations/s3/s3.service';
 import { ConflictException, ValidationException } from '@common/exceptions';
+import { TeamService } from '@api/team/team.service';
 
 @Injectable()
 export class ChapterService {
   constructor(
     private readonly chapterRepository: ChapterRepository,
     private readonly titleService: TitleService,
+    private readonly teamService: TeamService,
     private readonly s3Service: S3Service,
   ) {}
 
   async create(createChapterDto: CreateChapterDto) {
-    const { volume, number, ukrainianName, englishName, originalName, title } =
-      createChapterDto;
+    const {
+      volume,
+      number,
+      ukrainianName,
+      englishName,
+      originalName,
+      title,
+      translator,
+    } = createChapterDto;
 
     const associatedTitle = await this.titleService.findOneByResourceId(title);
 
-    if (!associatedTitle) {
-      throw new NotFoundException('Title not found');
-    }
+    const team = await this.teamService.findOneByResourceId(translator);
 
     const newChapter = new ChapterModel();
 
     newChapter.title = associatedTitle;
+    newChapter.translator = team;
 
     newChapter.volume = volume;
     newChapter.number = number;
@@ -38,6 +46,11 @@ export class ChapterService {
     newChapter.originalName = originalName;
 
     newChapter.resourceId = this.chapterRepository.newResourceId();
+
+    await this.titleService.addTranslator(
+      associatedTitle.resourceId,
+      translator,
+    );
 
     return newChapter.save();
   }
@@ -73,7 +86,7 @@ export class ChapterService {
   ): Promise<ChapterModel> {
     const chapter = await this.findOneByResourceId(resourceId);
 
-    const { volume, number, title, pages } = chapter;
+    const { volume, number, title, pages, translator } = chapter;
 
     if (pages.length) {
       throw new ConflictException(
@@ -87,9 +100,9 @@ export class ChapterService {
 
     const updatedFiles = files.map((file, index) => ({
       ...file,
-      originalname: `titles/${title.resourceId}/chapters/${volume}/${number}/${
-        index + 1
-      }`,
+      originalname: `titles/${title.resourceId}/chapters/${
+        translator.resourceId
+      }/${volume}/${number}/${index + 1}`,
     }));
 
     chapter.pages = await this.s3Service.putMany(updatedFiles);

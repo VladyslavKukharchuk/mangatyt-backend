@@ -11,11 +11,14 @@ import {
   ValidationException,
 } from '@common/exceptions';
 import { DeleteResult } from 'typeorm';
+import { AddMemberDto } from '@api/team/dto/add-member.dto';
+import { UserService } from '@api/user/user.service';
 
 @Injectable()
 export class TeamService {
   constructor(
     private readonly teamRepository: TeamRepository,
+    private readonly userService: UserService,
     private readonly s3Service: S3Service,
   ) {}
   async create(
@@ -76,6 +79,51 @@ export class TeamService {
     file.originalname = `teams/${team.resourceId}/cover`;
 
     team.cover = await this.s3Service.putOne(file);
+
+    return await this.teamRepository.saveNewOrUpdatedModel(team);
+  }
+
+  async addMember(
+    resourceId: string,
+    addMemberDto: AddMemberDto,
+  ): Promise<TeamModel> {
+    const team = await this.teamRepository.getWithMembersByResourceId(
+      resourceId,
+    );
+
+    if (!team) {
+      throw new NotFoundException('Team not found');
+    }
+
+    const { member } = addMemberDto;
+
+    const newMember = await this.userService.findByResourceId(member);
+
+    team.members.push(newMember);
+
+    return await this.teamRepository.saveNewOrUpdatedModel(team);
+  }
+
+  async removeMember(resourceId: string, memberId: string): Promise<TeamModel> {
+    const team = await this.teamRepository.getWithMembersByResourceId(
+      resourceId,
+    );
+
+    if (!team) {
+      throw new NotFoundException('Team not found');
+    }
+
+    const targetMember = await this.userService.findByResourceId(memberId);
+
+    const index = team.members.findIndex(
+      (member) => member.resourceId === targetMember.resourceId,
+    );
+
+    if (index === -1) {
+      throw new ConflictException('There is no such member in the team');
+    }
+
+    team.members.splice(index, 1);
 
     return await this.teamRepository.saveNewOrUpdatedModel(team);
   }

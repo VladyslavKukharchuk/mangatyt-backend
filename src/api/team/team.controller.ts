@@ -17,6 +17,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from '@common/decorators/user.decorator';
 import { UserModel } from '@api/user/user.model';
 import { AuthGuard } from '@nestjs/passport';
+import { AddMemberDto } from '@api/team/dto/add-member.dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('team')
@@ -53,6 +54,22 @@ export class TeamController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.teamService.addCover(resourceId, file);
+  }
+
+  @Post(':resourceId/members')
+  addMember(
+    @Param('resourceId') resourceId: string,
+    @Body() addMemberDto: AddMemberDto,
+  ) {
+    return this.teamService.addMember(resourceId, addMemberDto);
+  }
+
+  @Delete(':resourceId/members/:member')
+  removeMember(
+    @Param('resourceId') resourceId: string,
+    @Param('member') member: string,
+  ) {
+    return this.teamService.removeMember(resourceId, member);
   }
 
   @Delete(':resourceId/cover')
