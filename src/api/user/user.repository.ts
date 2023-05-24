@@ -1,8 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@src/database/base.repository.abstract';
 import { UserModel } from './user.model';
+import { BaseRepository } from '@common/repository/base.repository.abstract';
+import { ResourcePrefix } from '@common/enum/resource.enum';
 
 @Injectable()
 class UserRepository extends BaseRepository<UserModel> {
@@ -10,7 +11,7 @@ class UserRepository extends BaseRepository<UserModel> {
     @InjectRepository(UserModel)
     private repository: Repository<UserModel>,
   ) {
-    super(repository);
+    super(ResourcePrefix.USER, repository);
   }
 
   async create({

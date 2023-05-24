@@ -1,8 +1,9 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@src/database/base.repository.abstract';
-import { AuthorModel } from './author.model';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Injectable } from "@nestjs/common";
+import { AuthorModel } from "./author.model";
+import { BaseRepository } from "@common/repository/base.repository.abstract";
+import { ResourcePrefix } from "@common/enum/resource.enum";
 
 @Injectable()
 class AuthorRepository extends BaseRepository<AuthorModel> {
@@ -10,7 +11,7 @@ class AuthorRepository extends BaseRepository<AuthorModel> {
     @InjectRepository(AuthorModel)
     private repository: Repository<AuthorModel>,
   ) {
-    super(repository);
+    super(ResourcePrefix.AUTHOR, repository);
   }
 
   async getByResourceId(resourceId: string): Promise<AuthorModel> {

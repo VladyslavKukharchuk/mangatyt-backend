@@ -1,8 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@src/database/base.repository.abstract';
 import { TeamModel } from './team.model';
+import { BaseRepository } from '@common/repository/base.repository.abstract';
+import { ResourcePrefix } from '@common/enum/resource.enum';
 
 @Injectable()
 class TeamRepository extends BaseRepository<TeamModel> {
@@ -10,7 +11,7 @@ class TeamRepository extends BaseRepository<TeamModel> {
     @InjectRepository(TeamModel)
     private repository: Repository<TeamModel>,
   ) {
-    super(repository);
+    super(ResourcePrefix.TEAM, repository);
   }
 
   async getByResourceId(resourceId: string): Promise<TeamModel> {
