@@ -50,13 +50,13 @@ export class ChapterController {
     return this.chapterService.addPages(resourceId, files);
   }
 
-  @Delete(':resourceId/pages')
-  removePages(@Param('resourceId') resourceId: string) {
-    return this.chapterService.removePages(resourceId);
-  }
-
   @Delete(':resourceId')
   remove(@Param('resourceId') resourceId: string) {
     return this.chapterService.remove(resourceId);
+  }
+
+  @Delete(':resourceId/pages')
+  removePages(@Param('resourceId') resourceId: string) {
+    return this.chapterService.removePages(resourceId);
   }
 }

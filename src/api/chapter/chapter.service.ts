@@ -127,7 +127,13 @@ export class ChapterService {
   }
 
   async remove(resourceId: string): Promise<DeleteResult> {
-    await this.removePages(resourceId);
+    const chapter = await this.findOneByResourceId(resourceId);
+
+    const { pages } = chapter;
+
+    if (pages.length) {
+      await this.removePages(resourceId);
+    }
 
     const deleted = await this.chapterRepository.delete(resourceId);
 

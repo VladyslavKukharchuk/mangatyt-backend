@@ -17,6 +17,7 @@ class AuthorRepository extends BaseRepository<AuthorModel> {
   async getByResourceId(resourceId: string): Promise<AuthorModel> {
     const qb = this.repository
       .createQueryBuilder('authors')
+      .leftJoinAndSelect('authors.titles', 'titles')
       .where('authors.resource_id = :resourceId', { resourceId });
     return await qb.getOne();
   }

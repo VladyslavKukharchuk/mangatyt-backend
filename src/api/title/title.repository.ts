@@ -19,6 +19,7 @@ class TitleRepository extends BaseRepository<TitleModel> {
       .createQueryBuilder('titles')
       .leftJoinAndSelect('titles.authors', 'authors')
       .leftJoinAndSelect('titles.translators', 'translators')
+      .leftJoinAndSelect('titles.chapters', 'chapters')
       .where('titles.resource_id = :resourceId', { resourceId });
     return await qb.getOne();
   }

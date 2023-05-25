@@ -19,11 +19,11 @@ import { UserModel } from '@api/user/user.model';
 import { AuthGuard } from '@nestjs/passport';
 import { AddMemberDto } from '@api/team/dto/add-member.dto';
 
-@UseGuards(AuthGuard('jwt'))
 @Controller('team')
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   create(@User() user: UserModel, @Body() createTeamDto: CreateTeamDto) {
     return this.teamService.create(createTeamDto, user);
@@ -39,6 +39,7 @@ export class TeamController {
     return this.teamService.findAll();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Put(':resourceId')
   update(
     @Param('resourceId') resourceId: string,
@@ -47,6 +48,7 @@ export class TeamController {
     return this.teamService.update(resourceId, updateTeamDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post(':resourceId/cover')
   @UseInterceptors(FileInterceptor('image'))
   addCover(
@@ -56,6 +58,7 @@ export class TeamController {
     return this.teamService.addCover(resourceId, file);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post(':resourceId/members')
   addMember(
     @Param('resourceId') resourceId: string,
@@ -64,6 +67,7 @@ export class TeamController {
     return this.teamService.addMember(resourceId, addMemberDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':resourceId/members/:member')
   removeMember(
     @Param('resourceId') resourceId: string,
@@ -72,11 +76,13 @@ export class TeamController {
     return this.teamService.removeMember(resourceId, member);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':resourceId/cover')
   removeCover(@Param('resourceId') resourceId: string) {
     return this.teamService.removeCover(resourceId);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':resourceId')
   remove(@Param('resourceId') resourceId: string) {
     return this.teamService.remove(resourceId);

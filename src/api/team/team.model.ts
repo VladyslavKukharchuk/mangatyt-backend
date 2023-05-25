@@ -7,7 +7,7 @@ import { ChapterModel } from '@api/chapter/chapter.model';
 @Entity({ name: 'teams' })
 export class TeamModel extends BaseModel {
   @Column({ type: 'text', nullable: true })
-  cover: string;
+  cover?: string;
 
   @Column({ type: 'text', unique: true })
   name: string;
@@ -25,7 +25,6 @@ export class TeamModel extends BaseModel {
   discord?: string;
 
   @ManyToMany(() => UserModel, (user) => user.teams)
-  @JoinTable()
   members: UserModel[];
 
   @ManyToMany(() => TitleModel, (title) => title.translators)

@@ -8,7 +8,7 @@ export class ChapterModel extends BaseModel {
   @Column({ type: 'integer' })
   volume: number;
 
-  @Column({ type: 'integer' })
+  @Column({ type: 'numeric', precision: 10, scale: 2 })
   number: number;
 
   @Column({ type: 'text', nullable: true })

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import BaseModel from '@common/model/base.abstract.model';
 import { TeamModel } from '@api/team/team.model';
 
@@ -7,7 +7,7 @@ export class UserModel extends BaseModel {
   @Column({
     nullable: true,
   })
-  avatar: string;
+  avatar?: string;
 
   @Column({
     unique: true,
@@ -25,5 +25,6 @@ export class UserModel extends BaseModel {
   username: string;
 
   @ManyToMany(() => TeamModel, (team) => team.members)
+  @JoinTable()
   teams: TeamModel[];
 }
